@@ -1,15 +1,13 @@
 name: Flask CI/CD Pipeline
 on:
   push:
-<<<<<<< HEAD
       branches: [ "main" ]
   pull_request:
       branches: [ "main" ]
-=======
+
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
->>>>>>> ebe48d1 (Add CI/CD workflow)
 
 jobs:
   build:
