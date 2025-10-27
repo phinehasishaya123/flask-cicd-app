@@ -26,7 +26,8 @@ jobs:
         with:
           push: true
           tags: phinehasishaya/flask-cicd-app:latest
- deploy:
+
+  deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:
