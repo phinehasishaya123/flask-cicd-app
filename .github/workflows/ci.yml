@@ -29,21 +29,14 @@ jobs:
 
   deploy:
     needs: build-and-push
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: Deploy to Ubuntu VM via SSH
-        uses: appleboy/ssh-action@v1.1.0
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: |
-            echo "🚀 Deploying Flask app on VM..."
-            cd /home/phinehas/flask-cicd-app
-            git pull origin main || echo "Repo up to date"
-            docker pull phinehasishaya/flask-cicd-app:latest
-            docker stop flask-app || true
-            docker rm flask-app || true
-            docker run -d --name flask-app -p 5000:5000 phinehasishaya/flask-cicd-app:latest
-            echo "✅ Deployment successful!"
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy with Terraform
+        run: |
+          cd ~/flask-cicd-app
+          terraform init -input=false
+          terraform apply -auto-approve -input=false
