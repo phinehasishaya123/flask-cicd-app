@@ -39,5 +39,5 @@ jobs:
             --header "Authorization: Bearer ${{ secrets.TFC_TOKEN }}" \
             --header "Content-Type: application/vnd.api+json" \
             --request POST \
-            --data "{\"data\":{\"attributes\":{\"message\":\"Triggered from GitHub Actions after Docker push\"},\"type\":\"run\",\"relationships\":{\"workspace\":{\"data\":{\"type\":\"workspaces\",\"id\":\"${{ secrets.TFC_WORKSPACE_ID }\"}}}}}" \
+            --data "{\"data\":{\"attributes\":{\"message\":\"Triggered from GitHub Actions after Docker push\"},\"type\":\"run\",\"relationships\":{\"workspace\":{\"data\":{\"type\":\"workspaces\",\"id\":\"${{ secrets.TFC_WORKSPACE_ID }}\"}}}}}" \
             https://app.terraform.io/api/v2/runs
