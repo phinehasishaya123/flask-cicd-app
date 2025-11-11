@@ -27,16 +27,17 @@ jobs:
           push: true
           tags: phinehasishaya/flask-cicd-app:latest
 
-  deploy:
+  trigger-terraform:
     needs: build-and-push
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+
     steps:
-      - name: Deploy to local VM
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: |
-            cd /home/${{ secrets.DEPLOY_USER }}
-            ./deploy.sh
+      - name: Trigger Terraform Cloud run
+        run: |
+          echo "Triggering Terraform Cloud apply run..."
+          curl \
+            --header "Authorization: Bearer ${{ secrets.TFC_TOKEN }}" \
+            --header "Content-Type: application/vnd.api+json" \
+            --request POST \
+            --data "{\"data\":{\"attributes\":{\"message\":\"Triggered from GitHub Actions after Docker push\"},\"type\":\"run\",\"relationships\":{\"workspace\":{\"data\":{\"type\":\"workspaces\",\"id\":\"${{ secrets.TFC_WORKSPACE_ID }\"}}}}}" \
+            https://app.terraform.io/api/v2/runs
